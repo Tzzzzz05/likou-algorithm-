@@ -1,0 +1,76 @@
+#### 力扣27题-移除元素
+
+详细讲解请移步：[代码随想录 ](https://www.programmercarl.com/0027.移除元素.html#算法公开课)
+
+``` c++
+//第一种写法：暴力解法
+#icnlude<iostream>
+using namespace std;
+//使用俩个循环来进行，当在数组中找到一个target后，将用一个内循环其后面的每一个元素向前推一个位置。
+int fun(vector<int>&nums,int target)
+{
+    int size=nums.size();
+    for(int i=0;i<nums.size();i++)
+    {
+        if(nums[i]==target)
+        {
+            for(int j=i+1;j<size;j++)
+        {
+            nums[j-1]=nums[j];
+			
+		}
+            //因为“删除”一个target，所以数组长度减一
+            size--;
+            /*因为“删除”一个target后，还需要判断新上位的那个元素是
+            不是target，所以需要将其i--*/
+            i--;
+            
+        }
+    }
+    return size;//返回数组最终长度
+    
+}
+
+int main()
+{
+    vector<int>nums={1,2,3,4,5,6,7,8,100,99};
+    int target;
+    cin>>target;
+    cout<<fun(nums,target);
+}
+```
+
+
+
+```c++
+//第二种方法：双指针法
+#icnlude<iostream>
+#include<vector>
+using namespace std;
+
+int fun(vector<int>&nums,int target)
+{
+    int slow=0;
+    int size=nums.size();
+    for(int fast=0;fast<size;fast++)
+    {
+        if(nums[fast]!=target)
+        {
+            nums[slow]=nums[fast];
+            slow++;
+        }
+        
+    }
+    return slow
+}
+
+
+int main()
+{
+    vector<int>nums={1,2,3,4,5,6,7,8,100,99};
+    int target;
+    cin>>target;
+    cout<<fun(nums,target);
+}
+```
+
