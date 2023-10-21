@@ -4,11 +4,7 @@
 
 ## 数组
 
-<img src="D:\力扣算法题\likou-algorithm-\structure-algorithm.assets\数组总结.png" alt="img" style="zoom:200%;" />
-
-
-
-
+![数组总结](D:\桌面\likou-algorithm-\structure-algorithm.assets\数组总结-1697901933676-1.png)
 
 ### 力扣27题-[移除元素](https://leetcode.cn/problems/remove-element/)
 
