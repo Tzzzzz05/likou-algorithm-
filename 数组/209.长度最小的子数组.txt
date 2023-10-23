@@ -1,0 +1,97 @@
+### 力扣209题-[长度最小的子数组](https://leetcode.cn/problems/minimum-size-subarray-sum/)
+
+详细讲解请移步：[代码随想录 ](https://www.programmercarl.com/0209.长度最小的子数组.html#算法公开课)
+
+#### 第一种写法：滑动窗口
+
+```c++
+//
+#include<iostream>
+#include<vector>
+using namespace std;
+
+class Solution {
+public:
+    int minSubArrayLen(int target, vector<int>& nums) {
+        int sum=0;	//滑动窗口数值之和
+        int i=0;	//滑动窗口起始位置
+        int result=INT32_MAX; 
+        //这个INT32_MAX是一个宏，是32位的最大值，即 2147483647
+
+        for(int j=0;j<nums.size();j++)
+        {
+            sum+=nums[j];
+            while(sum>=target)
+            {
+                int nowlong=j-i+1;	// 取子序列的长度
+                result=min(nowlong,result);
+                sum=sum-nums[i];
+                // 这里体现出滑动窗口的精髓之处，不断变更i（子序列的起始位置）
+            }
+                i++;
+            }
+
+        }
+		//如果result没有被赋值的话，就返回0，说明没有符合条件的子序列
+        return result==INT32_MAX?0:result;
+
+
+    }
+};
+int main()
+{
+    vector<int>nums={2,3,1,2,4,3};
+
+    Solution A;
+    int result=A.minSubArrayLen(8,nums);
+    cout<<result<<endl;
+
+}
+```
+
+
+
+#### 第二种写法：暴力法
+
+```c++
+#include<iostream>
+#include<vector>
+using namespace std;
+
+class Solution {
+public:
+    int minSubArrayLen(int target, vector<int>& nums) {
+        int result=INT32_MAX;	// 最终的结果
+        int newlong=0;	// 子序列的数值之和
+        int sum=0;	
+        for(int i=0;i<nums.size();i++)// 设置子序列起点为i
+        {
+        sum=0;
+          for(int j=i;j<nums.size();j++)// 设置子序列终止位置为j
+         {
+          sum+=nums[j];
+          newlong=j-i+1;
+          if(sum>=target)
+          {
+            result=min(result,newlong);
+            break;// 因为我们是找符合条件最短的子序列，所以一旦符合条件就break
+          }
+            
+         }
+    }
+        // 如果result没有被赋值的话，就返回0，说明没有符合条件的子序列
+      return result==INT32_MAX ? 0:result;
+
+    }
+};
+int main()
+{
+    vector<int>nums={2,3,1,2,4,3};
+
+    Solution A;
+    int result=A.minSubArrayLen(7,nums);
+    cout<<result<<endl;
+
+}
+```
+

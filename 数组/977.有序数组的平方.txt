@@ -1,0 +1,66 @@
+### 力扣977题-[有序数组的平方](https://leetcode.cn/problems/squares-of-a-sorted-array/)
+
+详细讲解请移步：[代码随想录](https://www.programmercarl.com/0977.有序数组的平方.html)
+
+#### 第一种写法：暴力解法
+
+```c++
+//部分代码//时间复杂度是 O(n + nlogn)
+class Solution {
+public:
+    vector<int> sortedSquares(vector<int>& A) {
+        for (int i = 0; i < A.size(); i++) {
+            A[i] *= A[i];
+        }
+        sort(A.begin(), A.end()); // 快速排序,时间复杂度为O(nlo)
+        return A;
+    }
+};
+```
+
+
+
+#### 第二种写法：双指针法
+
+```c++
+//时间复杂度是 O(n)
+#include<iostream>
+#include<vector>
+using namespace std;
+class Solution {
+public:
+    vector<int> sortedSquares(vector<int>& nums) { //此函数返回一个vector<int>动态数组
+        vector<int>result(nums.size(), 0);  //（nums.size(), 0）新建一个大小为nums.size()，元素都为0的动态数组
+        int sizes = nums.size()-1;
+        
+        for (int left = 0,right = nums.size() - 1; left <= right;)//使用一个循环，来进行双指针移动操作
+        {
+            if (nums[left] * nums[left] > nums[right] * nums[right])
+            {
+                result[sizes] = nums[left] * nums[left];
+                sizes--;//这里可以合并简化为result[sizes--] = nums[left] * nums[left];
+                left++;
+            }
+            else {
+                result[sizes] = nums[right] * nums[right];
+                sizes--;
+                right--;
+            }
+        }
+        return result;
+    }
+};
+
+int main()
+{
+    Solution mvp;
+    vector<int>nums = { -12,-4,-3,0,4,10,11 };
+    nums=mvp.sortedSquares(nums);
+    for (int element : nums) {
+        cout << element << " ";
+    }
+
+
+}
+```
+
