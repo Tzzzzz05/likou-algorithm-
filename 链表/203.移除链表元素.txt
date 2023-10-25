@@ -1,0 +1,106 @@
+### 力扣203题-[203. 移除链表元素 ](https://leetcode.cn/problems/remove-linked-list-elements/description/)
+
+详细讲解请移步：[[代码随想录]](https://www.programmercarl.com/0027.移除元素.html#算法公开课)
+
+#### 第一种写法：分头结点和非头结点
+
+```c++
+//时间复杂度: O(n)
+//空间复杂度: O(1)
+#include <iostream>
+#include <vector>
+using namespace std;
+
+struct ListNode {
+	int val;
+	ListNode *next;
+	ListNode(int x): val(x), next(nullptr) {}
+};
+
+class Solution {
+	public:
+		ListNode *removeElements(ListNode *head, int val) {
+
+			//头结点处理
+			while (head != nullptr && head->val == val) {
+				ListNode *tmp = head;
+				head = head->next;
+				delete tmp;
+			}
+
+			ListNode *cur = head;
+			//非头结点处理
+			while (cur != nullptr && cur->next != nullptr) {
+				if (cur->next->val == val) {
+					ListNode *tsw = cur->next;
+					cur->next = cur->next->next;
+					delete tsw;
+
+				} else {
+					cur = cur->next;
+				}
+			}
+			return head;
+		}
+};
+
+int main() {
+	Solution tzp;
+	ListNode *head = new ListNode(8);
+	ListNode *two = new ListNode(9);
+	ListNode *three = new ListNode(10);
+	ListNode *four = new ListNode(8);
+	ListNode *five = new ListNode(11);
+	ListNode *six = new ListNode(8);
+
+	head->next = two;
+	two->next = three;
+	three->next = four;
+	four->next = five;
+	five->next = six;
+	six->next = nullptr;
+	ListNode *MVP = tzp.removeElements(head, 8);
+	while (MVP != NULL) {
+		ListNode *jj = MVP;
+		cout << jj->val << "->";
+		MVP = jj->next;
+		delete jj;
+	}
+
+	while (head != NULL) {
+		ListNode *list = head;
+		head = head->next;
+		delete list;
+	}
+
+}
+
+```
+
+#### **第二种写法：设置一个虚拟头结点在进行移除节点操作：**
+
+```cpp
+//时间复杂度: O(n)
+//空间复杂度: O(1)
+class Solution {
+public:
+    ListNode* removeElements(ListNode* head, int val) {
+        ListNode* dummyHead = new ListNode(0); // 设置一个虚拟头结点
+        dummyHead->next = head; // 将虚拟头结点指向head，这样方面后面做删除操作
+        ListNode* cur = dummyHead;
+        while (cur->next != NULL) {
+            if(cur->next->val == val) {
+                ListNode* tmp = cur->next;
+                cur->next = cur->next->next;
+                delete tmp;
+            } else {
+                cur = cur->next;
+            }
+        }
+        head = dummyHead->next;//注意这里，
+        delete dummyHead;
+        return head;
+    }
+};
+```
+
