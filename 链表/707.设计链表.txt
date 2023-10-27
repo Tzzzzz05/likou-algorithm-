@@ -1,0 +1,121 @@
+### 力扣 [707. 设计链表 ](https://leetcode.cn/problems/design-linked-list/description/)
+
+详细讲解请移步：[代码随想录](https://www.programmercarl.com/0707.设计链表.html)
+
+```c++
+#include <iostream>
+using namespace std;
+
+class MyListNode {
+	public:
+		struct ListNode {
+			int val;
+			ListNode *next;
+			ListNode(int x): val(x), next(nullptr) {}
+		};
+		MyListNode() {
+			_dummyhead = new ListNode(0);
+			_size = 0;
+		}
+
+		int get(int index) {
+			if (index < 0 || index > (_size - 1)) {
+				return -1;
+			}
+			ListNode *cur = _dummyhead->next;
+			while (index) {
+				cur = cur->next;
+				index--;
+			}
+			return cur->val;
+
+		}
+		void addAtHead(int val) {
+			ListNode *ins = new ListNode(val);
+			ins->next = _dummyhead->next;
+			_dummyhead->next = ins;
+			_size++;
+		}
+
+		void addAtTail(int val) {
+			ListNode *tail = new ListNode(val);
+			ListNode *cur = _dummyhead;
+			while (cur->next != nullptr) {
+				cur = cur->next;
+			}
+			cur->next = tail;
+			_size++;
+		}
+
+		void addAtIndex(int index, int val) {
+			if (index > 0)
+				return;
+			if (index < 0)
+				index = 0;
+			ListNode *atindex = new ListNode(val);
+			ListNode *cur = _dummyhead;
+			while (index) {
+				cur = cur->next;
+				index--;
+			}
+			atindex->next = cur->next;
+			cur->next = atindex;
+			_size++;
+
+		}
+		void deleteAtIndex(int index) {
+			ListNode *cur = _dummyhead;
+			while (index--) {
+				cur = cur->next;
+			}
+			ListNode *tsw = cur->next;
+			cur->next = cur->next->next;
+			delete tsw;
+		}
+		void printLinkedList() {
+			ListNode *cur = _dummyhead;
+			while (cur->next != nullptr) {
+				cout << cur->next->val << "->";
+				cur = cur->next;
+			}
+			cout << "nullept" << endl;
+		}
+
+		int _size;
+		ListNode *_dummyhead;
+};
+
+
+int main() {
+	MyListNode apex;
+	// MyListNode::ListNode* head = new MyListNode::ListNode(9);
+
+	// MyListNode::ListNode* two = new MyListNode::ListNode(98);
+	// apex._dummyhead->next = head;
+	// head->next=two;
+
+	MyListNode::ListNode *cur = apex._dummyhead->next; // 从链表的第一个节点开始
+	MyListNode::ListNode *prev = apex._dummyhead; // 用于记录前一个节点
+
+
+	apex.addAtHead(9);
+	apex.addAtHead(90);
+	apex.addAtTail(99);
+	apex.addAtIndex(2, 88);
+	apex.printLinkedList();
+
+
+
+	while (cur != nullptr) {
+
+		prev->next = cur;
+
+		cur = cur->next;
+		delete prev->next;
+	}
+
+}
+
+
+```
+
