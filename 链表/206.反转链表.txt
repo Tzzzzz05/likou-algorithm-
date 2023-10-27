@@ -1,0 +1,135 @@
+### 力扣**[206.反转链表](https://leetcode.cn/problems/reverse-linked-list/)**
+
+详细讲解请移步：[代码随想录 ](https://www.programmercarl.com/0206.翻转链表.html#其他解法)
+
+```c++
+//双指针法
+//时间复杂度: O(n)
+//空间复杂度: O(1)
+#include<iostream>
+using namespace std;
+
+struct ListNode {
+    int val;
+    ListNode *next;
+    ListNode() : val(0), next(nullptr) {}
+    ListNode(int x) : val(x), next(nullptr) {}
+    ListNode(int x, ListNode *next) : val(x), next(next) {}
+};
+class Solution {
+    public:
+    ListNode* reverseList(ListNode* head) {
+        ListNode* pre=NULL;
+        ListNode* cur=head;
+        ListNode* tmp;
+        while(cur!=NULL)
+        {
+            tmp=cur->next;
+            cur->next=pre;
+            pre=cur;
+            cur=tmp;
+
+        }
+        return pre;
+    }
+};
+
+
+
+int main()
+{	
+   
+    ListNode* head=new ListNode(9);
+    ListNode* two=new ListNode(8);
+    ListNode* three=new ListNode(7);
+    ListNode* four=new ListNode(6);
+
+    head->next=two;
+    two->next=three;
+    three->next=four;
+    four->next=NULL;
+    Solution apex;
+
+    ListNode* newhead=apex.reverseList(head);
+ 
+    ListNode* cur=newhead;
+    
+    while(cur!=NULL)
+    {
+        ListNode* prev=cur;
+        cout<<cur->val<<"->";
+        cur=cur->next;
+        delete prev;
+    }
+
+}
+
+
+
+```
+
+```c++
+//递归写法
+//双指针法
+//时间复杂度: O(n)
+//空间复杂度: O(n)
+#include<iostream>
+using namespace std;
+
+struct ListNode {
+    int val;
+    ListNode *next;
+    ListNode() : val(0), next(nullptr) {}
+    ListNode(int x) : val(x), next(nullptr) {}
+    ListNode(int x, ListNode *next) : val(x), next(next) {}
+};
+class Solution {
+    public:
+    ListNode* reverse(ListNode* pre,ListNode* cur){
+        if(cur == NULL) return pre;
+        ListNode* temp = cur->next;
+        cur->next = pre;
+        // 可以和双指针法的代码进行对比，如下递归的写法，其实就是做了这两步
+        // pre = cur;
+        // cur = temp;
+        return reverse(cur,temp);
+    }
+    ListNode* reverseList(ListNode* head) {
+        // 和双指针法初始化是一样的逻辑
+        // ListNode* cur = head;
+        // ListNode* pre = NULL;
+        return reverse(NULL, head);
+    }
+
+
+    int main()
+    {	
+
+        ListNode* head=new ListNode(9);
+        ListNode* two=new ListNode(8);
+        ListNode* three=new ListNode(7);
+        ListNode* four=new ListNode(6);
+
+        head->next=two;
+        two->next=three;
+        three->next=four;
+        four->next=NULL;
+        Solution apex;
+
+        ListNode* newhead=apex.reverseList(head);
+
+        ListNode* cur=newhead;
+
+        while(cur!=NULL)
+        {
+            ListNode* prev=cur;
+            cout<<cur->val<<"->";
+            cur=cur->next;
+            delete prev;
+        }
+        cout<<"NULL";
+
+    }
+
+```
+
