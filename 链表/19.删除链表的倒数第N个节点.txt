@@ -1,0 +1,45 @@
+### 力扣-[19. 删除链表的倒数第 N 个结点 - 力扣（LeetCode）](https://leetcode.cn/problems/remove-nth-node-from-end-of-list/description/)
+
+详细讲解请移步：[[代码随想录]](https://www.programmercarl.com/0024.两两交换链表中的节点.html)
+
+```c++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+    public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        ListNode* dummyhead=new ListNode(0);//创建虚拟头结点
+        dummyhead->next=head;
+        ListNode* fast=dummyhead;
+        ListNode* slow=dummyhead;
+        n++;
+        //为什么在这里要加个n++的原因是：因为删除链表中的元素要用到所删除元素的上一位元素。所以让fast多向后走一位，这样slow就会少走一位，从而停在删除结点的前一位。
+        while(n&&fast!=nullptr)
+        {
+            fast=fast->next;
+            n--;
+        }      
+        while(fast!=nullptr)
+        {
+            fast=fast->next;
+            slow=slow->next;
+        }
+        ListNode* tmp=slow->next;
+        slow->next=slow->next->next;
+        delete tmp;
+
+        ListNode* tmp1=dummyhead->next;
+        delete dummyhead;
+        return tmp1;
+    }
+};
+```
+
