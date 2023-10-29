@@ -1,0 +1,76 @@
+### 力扣[24. 两两交换链表中的节点](https://leetcode.cn/problems/swap-nodes-in-pairs/)
+
+详细讲解请移步：[代码随想录](https://www.programmercarl.com/0024.两两交换链表中的节点.html)
+
+```c++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+//迭代法
+//时间复杂度：O(n)
+//空间复杂度：O(1)
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        ListNode* dummyhead=new ListNode(0);
+       //创建一个虚拟头结点可以操纵后面俩个结点的交换，否则可能会出现操作空节点的行为。
+        dummyhead->next=head;
+        ListNode* cur=dummyhead;
+        while(cur->next!=nullptr&&cur->next->next!=nullptr)
+            //这里一定是先->next再->next->next,因为如果->next是空结点的话，就会出现操作空节点的行为
+        {
+            ListNode* tmp=cur->next;//头结点
+            ListNode* tmp1=cur->next->next->next;//头结点下一个的下一个结点
+            cur->next=cur->next->next;
+            cur->next->next=tmp;
+            cur->next->next->next=tmp1;
+            cur=cur->next->next;
+
+        }
+        return dummyhead->next;
+    }
+};
+```
+
+```c++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+//改版，更简洁，看得懂
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        ListNode* dummyhead=new ListNode(0);
+        dummyhead->next=head;
+        ListNode* cur=dummyhead;
+        while(cur->next!=nullptr&&cur->next->next!=nullptr)
+        {
+            ListNode* num1=cur->next;
+            ListNode* num2=cur->next->next;
+            cur->next=num2;
+            num1->next=num2->next;
+            num2->next=num1;
+            cur=num1;
+        }
+        ListNode* ans=dummyhead->next;
+        delete dummyhead;
+        return ans;
+
+    }
+};
+```
+
