@@ -13,6 +13,9 @@
  *     ListNode(int x, ListNode *next) : val(x), next(next) {}
  * };
  */
+//双指针法
+//时间复杂度:O(n)
+//空间复杂度:O(1)
 class Solution {
     public:
     ListNode* removeNthFromEnd(ListNode* head, int n) {
