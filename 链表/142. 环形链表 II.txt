@@ -1,0 +1,67 @@
+### 力扣-[142. 环形链表 II - 力扣（LeetCode）](https://leetcode.cn/problems/linked-list-cycle-ii/)
+
+详情请看[代码随想录 (programmercarl.com)](https://www.programmercarl.com/0142.环形链表II.html#算法公开课)
+
+```c++
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+
+//时间复杂度：O(n)
+class Solution {
+public:
+    ListNode *detectCycle(ListNode *head) {
+        ListNode* fast=head;
+        ListNode* slow=head;
+        //首先判断是否有环，如果有环的话，那么必定快慢指针一定会相遇
+        while(fast!=NULL&&fast->next!=NULL)
+        {
+            fast=fast->next->next;//让快指针一次走俩步
+            slow=slow->next;
+            //让慢指针一次走一步，这样相当于慢指针相对不动，而快指针每次走一步。，这样的话总能够使快指针在循环内与慢指针碰头
+            //此处如果快慢指针相等了，则证明有环，则开始求环的路口
+            if(fast==slow)
+            {
+                ListNode* index1=head;//重新制定俩个指针分别指向头节点和快慢指针相遇的地方
+                ListNode* index2=fast;
+                while(index1!=index2)//不断以同速向前遍历，直到俩指针碰头相等，这个地方就是环的入口
+                {
+                    index1=index1->next;
+                    index2=index2->next;
+                    
+                }
+               return index1;
+            }
+        }
+         return NULL;
+    }
+};
+
+
+//为什么那样能找到循环入口?
+/*
+x=头节点到环入口距离    y=环入口到在环内快慢指针碰头的距离   z=碰头点到环入口处
+慢指针走的距离=x+y
+快指针走的距离=x+y+n(y+z) //n(y+z)的意思是快指针已经在环内走了n圈了
+
+所以
+2(x+y)=x+y+n(y+z)
+x + y = n (y + z)
+x=(n-1)(x+y)+z   且n一定是>=1的,因为快指针走的快，在慢指针前面
+当x=1时，x等于y，也就是说  头节点到环入口距离  与  碰头点到环入口处 相等
+
+所以分别再用俩指针分别从头结点和快慢指针碰头点以同杨的速度出发，当碰头时，那个点就是环的入口结点。
+*/
+
+/*
+//为什么慢指针进入环后第一圈内，就能被快指针追上？
+因为当慢指针进入环内后，它要遍历整个环所走的距离，快指针要走两倍这么多距离，所以慢指针肯定会在第一次在环内时被追上。
+*/
+
+```
+
