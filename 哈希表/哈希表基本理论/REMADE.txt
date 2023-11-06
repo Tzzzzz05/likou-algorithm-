@@ -1,0 +1,39 @@
+**这篇文章讲的还不错：[数据结构之哈希（hash）表 博客园 (cnblogs.com)](https://www.cnblogs.com/s-b-b/p/6208565.html)**
+
+**这篇也是：**[【精选】哈希表的知识讲解_哈希表key和value分别是什么](https://blog.csdn.net/LIsaWinLee/article/details/123279068)
+
+**此文件夹中有哈希表的基本原理及一些源代码。**
+
+ 以下是本人的一些理解的观点
+
+***
+
+<img src="D:\桌面\likou-algorithm-\哈希表\哈希表基本理论\REMADE.assets\image-20231102220029143.png" alt="image-20231102220029143" style="zoom:80%;" />
+
+- 哈希表本质是一个数组，下面是index 索引，从0到1；
+
+- 然后这个数组的每个元素是个指向一个结点的指针，也就是结点指针。
+
+- ~~~ 
+  //结点声明
+  typedef struct Node{
+  	const char* key;  //这是键也叫关键字
+  	const char* value; //这就是元素值
+  	Node *next;	//这是指向下一个结点的指针，在链地址法中用到
+  }Node;
+  ~~~
+
+- 总的来说就是，通过对关键字key，进行一个哈希计算，index=Hash(key),可以得出这个键所对应的value的结点的索引，从而快速找到这个结点以及结点中的value。
+
+
+
+![image-20231102221231517](D:\桌面\likou-algorithm-\哈希表\哈希表基本理论\REMADE.assets\image-20231102221231517.png)
+
+- **这种拉链法在插入结点的时候用的是单链表的头插法**
+
+- ~~~
+  np->next = node[index]; //np是新插入的结点，让它指向此索引对应的第一个结点
+  node[index] = np;//然后将新节点的地址赋值给node[index],让node[index]指针指向新节点的地址，从而达到让新节点成为头节点的目的
+  ~~~
+
+  

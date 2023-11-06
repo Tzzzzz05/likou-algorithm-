@@ -1,0 +1,35 @@
+### 力扣[242. 有效的字母异位词 - 力扣（LeetCode）](https://leetcode.cn/problems/valid-anagram/submissions/480128627/)
+
+详细讲解请移步：[代码随想录 (programmercarl.com)](https://www.programmercarl.com/0242.有效的字母异位词.html#算法公开课)
+
+~~~cpp
+//时间复杂度：O(n);
+//空间复杂度:O(1),空间上因为定义是的一个常量大小的辅助数组，所以空间复杂度为O(1)。
+
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+    int result[26]={0};//创建一个大小为26的数组，因为a~z有26位
+     for(int i=0;i<s.size();i++)
+    {
+        result[s[i]-'a']++;//'a'-'a'=0，'b'-'a'=1,以这种方法来得出0~25的索引
+    }
+    for(int j=0;j<t.size();j++)
+    {
+        result[t[j]-'a']--;
+    }
+    for(int z=0;z<26;z++)
+    {
+        if(result[z]!=0)
+        {
+            return false;
+        }
+    }
+    return true;
+    }
+
+
+
+};
+~~~
+
