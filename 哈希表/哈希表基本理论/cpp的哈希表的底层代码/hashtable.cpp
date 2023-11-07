@@ -1,4 +1,4 @@
-~~~cpp
+//~~~cpp
 #include "hashtable.h"
 
 Hash::Hash()
@@ -192,5 +192,5 @@ void Hash::RemoveItem(string name)//总之就是找出对应的索引的键值�
         }
     }
 }
-~~~
+
 

@@ -1,0 +1,72 @@
+### 力扣[349. 两个数组的交集 - 力扣（LeetCode）](https://leetcode.cn/problems/intersection-of-two-arrays/)
+
+详细讲解请移步：[代码随想录 (programmercarl.com)](https://www.programmercarl.com/0349.两个数组的交集.html#算法公开课)
+
+~~~c++
+//unordered_set写法
+//时间复杂度 O(n + m)。
+//空间复杂度 O(n + m)
+#include<iostream>
+#include<unordered_set>
+#include <vector>
+using namespace std;
+
+class Solution {
+    public:
+    vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+        unordered_set<int> result;
+        unordered_set<int> hashtable(nums1.begin(),nums1.end());
+        for(int i=0;i<nums2.size();i++)
+        {
+            if(hashtable.find(nums2[i])!=hashtable.end())
+            {
+                result.insert(nums2[i]);  
+            }
+        }
+        return  vector<int>(result.begin(),result.end());
+        // 创建一个vector<int>临时对象 并从 result_set（一个 std::unordered_set）中拷贝元素的。
+        }
+               
+        }; 
+int main()
+{
+	vector<int>nums1={1,2,3,4};
+    vector<int>nums2={2,2,3,4};
+    vector<int>nums3;
+    Solution apex;
+  	 nums3=apex.intersection(nums1,nums2);
+    for(int &num:nums3)
+    {
+        cout<<num<<" ";
+    }
+    
+}
+~~~
+
+~~~c++
+//数组写法
+//时间复杂度: O(m + n)
+//空间复杂度: O(n)
+class Solution {
+    public:
+    vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+        unordered_set<int> result;
+        int hashtable[1002]={0};
+        for(int i=0;i<nums1.size();i++)
+        {
+            hashtable[nums1[i]]=1;
+        }
+        for(int j=0;j<nums2.size();j++)
+        {
+            if(hashtable[nums2[j]]==1)
+            {
+                result.insert(nums2[j]);
+            }
+        }
+        return  vector<int>(result.begin(),result.end());
+        }
+               
+        }; 
+
+~~~
+

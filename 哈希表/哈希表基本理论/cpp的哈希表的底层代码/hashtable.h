@@ -1,4 +1,4 @@
-~~~
+//~~~
 #ifndef HASHTABLE_H
 #define HASHTABLE_H
  
@@ -37,5 +37,5 @@ public:
 };
  
 #endif // HASHTABLE_H
-~~~
+
 

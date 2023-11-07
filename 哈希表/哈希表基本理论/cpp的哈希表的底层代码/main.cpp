@@ -1,5 +1,5 @@
-~~~cpp
-#include "hashtable.cpp"
+//~~~cpp
+#include "hashtable.h"
  
 int main()
 {
@@ -49,5 +49,5 @@ int main()
  
     return 0;
 }
-~~~
+
 
