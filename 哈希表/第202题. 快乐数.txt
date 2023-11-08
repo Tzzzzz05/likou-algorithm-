@@ -1,0 +1,35 @@
+### 力扣[202. 快乐数 - 力扣（LeetCode）](https://leetcode.cn/problems/happy-number/)
+
+详细讲解请移步：[代码随想录 (programmercarl.com)](https://www.programmercarl.com/0202.快乐数.html#思路)
+
+~~~cpp
+class Solution {
+public:
+    // 取数值各个位上的单数之和
+    int getSum(int n) {
+        int sum = 0;
+        while (n) {
+            sum += (n % 10) * (n % 10);
+            n /= 10;
+        }
+        return sum;
+    }
+    bool isHappy(int n) {
+        unordered_set<int> set;//选择这个哈希表的原因是因为它自动除重，且如果n取值较大，相比于数组，没又那么浪费空间，								但内存开销会高一点，因为要进行哈希运算啥的。
+        while(1) {
+            int sum = getSum(n);
+            if (sum == 1) {
+                return true;
+            }
+            // 如果这个sum曾经出现过，说明已经陷入了无限循环了，立刻return false
+            if (set.find(sum) != set.end()) {
+                return false;
+            } else {
+                set.insert(sum);
+            }
+            n = sum;
+        }
+    }
+};
+~~~
+
