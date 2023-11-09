@@ -1,4 +1,42 @@
-### 力扣
+### 力扣[1. 两数之和 - 力扣（LeetCode）](https://leetcode.cn/problems/two-sum/)
 
-详细讲解请移步：
+详细讲解请移步：[代码随想录 (programmercarl.com)](https://www.programmercarl.com/0001.两数之和.html#算法公开课)
+
+~~~c++
+//时间复杂度:0(n)
+//空间复杂度:0(n)
+
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+using namespace std;
+
+class apex {
+	public:
+		vector<int> lol(vector<int> nums, int target) {
+			unordered_map<int, int>map1;
+
+			for (int i = 0; i < nums.size(); i++) {
+				auto ea = map1.find(target - nums[i]);
+				if (ea != map1.end()) {
+
+					return {ea->second, i};
+				} else {
+					map1.emplace(nums[i], i);
+				}
+			}
+
+			return {};
+		}
+};
+
+int main() {
+	apex jj;
+	vector<int>nums = {1, 2, 3, 4, 6};
+	nums = jj.lol(nums, 7);
+	for (int &ab : nums) {
+		cout << ab  << " ";
+	}
+}
+~~~
 
