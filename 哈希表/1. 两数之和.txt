@@ -20,7 +20,7 @@ class apex {
 				auto ea = map1.find(target - nums[i]);
 				if (ea != map1.end()) {
 
-					return {ea->second, i};
+					return {ea->second, i};//return vector<int>({ea->second, i});
 				} else {
 					map1.emplace(nums[i], i);
 				}

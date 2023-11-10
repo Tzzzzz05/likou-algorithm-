@@ -1,0 +1,41 @@
+### 力扣[454. 四数相加 II - 力扣（LeetCode）](https://leetcode.cn/problems/4sum-ii/submissions/481213341/)
+
+详细讲解请移步：[代码随想录 (programmercarl.com)](https://www.programmercarl.com/0454.四数相加II.html#算法公开课)
+
+```cpp
+//使用哈希表的目的是为了优化查找过程，从而降低时间复杂度
+//查找操作的时间复杂度是常数级别的，因为哈希表允许通过键直接访问值，而不需要遍历整个容器。
+/*
+时间复杂度：O(n^2)
+空间复杂度：O(n^2),取决于额外开创的空间哈希表，也就是nums1和num2数组中的元素相加，最坏情况是没有一对元素相加的值重复。
+*/
+class Solution {
+public:
+    int fourSumCount(vector<int>& nums1, vector<int>& nums2, vector<int>& nums3, vector<int>& nums4) {
+        unordered_map<int,int>unmap;
+        for(int &i:nums1)
+        {
+            for(int &j:nums2)
+            {
+                int sum1=i+j;             
+                unmap[sum1]++;
+//将sum1这个俩元素相加的值作为键，然后它出现的次数作为值，并按出现次数加一记录下来；
+            }
+        }
+        int count=0;//记录有多少个元组
+        for(int &d:nums3)
+        {
+            for(int& k:nums4)
+            {
+                int sum2=d+k;
+                auto it=unmap.find(0-sum2);
+                if(it!=unmap.end())
+                {
+                    count+=unmap[0-sum2];//自行理解
+                }
+            }
+        }
+        return count;
+    }
+};
+```
