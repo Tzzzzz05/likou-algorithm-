@@ -1,0 +1,92 @@
+### 力扣[383. 赎金信 - 力扣（LeetCode）](https://leetcode.cn/problems/ransom-note/submissions/481523939/)
+
+详解请见：[代码随想录 (programmercarl.com)](https://www.programmercarl.com/0383.赎金信.html#思路)
+
+~~~c++
+//暴力解法：
+//时间复杂度：o(n^2)//嵌套了循环
+//空间复杂度:o(1)//没使用额外空间
+class Solution {
+public:
+    bool canConstruct(string ransomNote, string magazine) {
+        for (int i = 0; i < magazine.length(); i++) {
+            for (int j = 0; j < ransomNote.length(); j++) {
+                // 在ransomNote中找到和magazine相同的字符
+                if (magazine[i] == ransomNote[j]) {
+                    ransomNote.erase(ransomNote.begin() + j); // ransomNote删除这个字符
+                    break;
+                }
+            }
+        }
+        // 如果ransomNote为空，则说明magazine的字符可以组成ransomNote
+        if (ransomNote.length() == 0) {
+            return true;
+        }
+        return false;
+    }
+};
+~~~
+
+~~~c++
+//哈希解法之数组映射
+//时间复杂度:o(n)
+//空间复杂度:o(1)
+class Solution {
+public:
+    bool canConstruct(string ransomNote, string magazine) {
+        int record[26] = {0};
+        //add
+        if (ransomNote.size() > magazine.size()) {
+            return false;
+        }
+        //注意这里是先magazine后ransomNote
+        for (int i = 0; i < magazine.length(); i++) {
+            // 通过record数据记录 magazine里各个字符出现次数
+            record[magazine[i]-'a'] ++;
+        }
+        for (int j = 0; j < ransomNote.length(); j++) {
+            // 遍历ransomNote，在record里对应的字符个数做--操作
+            record[ransomNote[j]-'a']--;
+            // 如果小于零说明ransomNote里出现的字符，magazine没有
+            if(record[ransomNote[j]-'a'] < 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+};
+~~~
+
+~~~c++
+//哈希解法之unorder_map
+//时间复杂度:o(n)
+//空间复杂度:o(1)
+class Solution {
+public:
+    bool canConstruct(string ransomNote, string magazine) {
+        unordered_map<char,int>Map;//创建一个哈希表，作用跟什么数组差不多，用来寻找某个元素是否存在。
+        for(char& jj:ransomNote)
+        {
+            Map[jj]++;
+        }
+        for(char&zz:magazine)
+        {   
+            auto it=Map.find(zz);
+            if(it!=Map.end())
+            {
+                Map[zz]--;
+                if(Map[zz]==0)
+                {
+                    Map.erase(zz);
+                }
+            }
+        }
+        if(Map.empty())
+        {
+            return true;
+        }
+        return false;
+    }
+};
+~~~
+
