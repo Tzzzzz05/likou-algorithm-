@@ -1,0 +1,79 @@
+### 力扣[15. 三数之和 - 力扣（LeetCode）](https://leetcode.cn/problems/3sum/description/)
+
+**详情请见：**[代码随想录 (programmercarl.com)](https://www.programmercarl.com/0015.三数之和.html#算法公开课)
+
+~~~c++
+//双指针法
+//时间复杂度：o(n^2)
+//空间复杂度：o(1)
+#include <iostream>
+#include <algorithm>
+#include <vector>
+using namespace std;
+
+//双指针写法
+class apex {
+    public:
+    vector<vector<int>> function(vector<int>nums) {
+        vector<vector<int>>result;
+        int Size = nums.size();
+        sort(nums.begin(), nums.end());
+        // 找出a + b + c = 0
+        // a = nums[i], b = nums[left], c = nums[right]
+        for (int i = 0; i < nums.size(); i++) {
+            // 排序之后如果第一个元素已经大于零，那么无论如何组合都不可能凑成三元组，直接返回结果就可以了
+            if (nums[i] > 0) {
+                return result;
+            }
+            //首先这里是对a去重
+            //这里为什么要用nums[i] != nums[i - 1]而不是i+1;
+            //如果是i+1的话，如果出现-1,-1,2这种情况，就会直接把这种结果跳过
+            if (i > 0 && nums[i] == nums[i - 1]) {
+                continue;
+            }
+
+            int left = i + 1;
+            int right = Size - 1;
+
+            while (left < right) { //不要用<=，因为有=的话就不是三数相加了
+                int tamp = nums[i] + nums[left] + nums[right];
+                if (tamp > 0) {
+                    right--;
+                } else if (tamp < 0) {
+                    left++;
+                } else {
+                    result.push_back(vector<int> {nums[i], nums[left], nums[right]});
+                    // 去重逻辑应该放在找到一个三元组之后，对b 和 c去重
+                    while (right > left && nums[right] == nums[right - 1]) {
+                        right--;
+                    }
+                    while (right > left && nums[left] == nums[left + 1]) {
+                        left++;
+                    }
+                    right--;
+                    left++;
+                }
+
+            }
+        }
+        return result;
+    }
+};
+
+int main() {
+    apex lol;
+    vector<int>nums = {1, 2, -1, -2, 1, 0, 3, -2, -2};
+    vector<vector<int>>happy;
+    happy = lol.function(nums);
+    for (vector<int> &i : happy) {
+        cout << "{" ;
+        for (int &j : i) {
+
+            cout << j << ",";
+        }
+        cout << "}";
+        cout << endl;
+    }
+}
+~~~
+
