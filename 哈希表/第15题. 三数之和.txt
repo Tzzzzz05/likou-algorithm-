@@ -1,41 +1,41 @@
-### åŠ›æ‰£[15. ä¸‰æ•°ä¹‹å’Œ - åŠ›æ‰£ï¼ˆLeetCodeï¼‰](https://leetcode.cn/problems/3sum/description/)
+### Á¦¿Û[15. ÈıÊıÖ®ºÍ - Á¦¿Û£¨LeetCode£©](https://leetcode.cn/problems/3sum/submissions/482179840/)
 
-**è¯¦æƒ…è¯·è§ï¼š**[ä»£ç éšæƒ³å½• (programmercarl.com)](https://www.programmercarl.com/0015.ä¸‰æ•°ä¹‹å’Œ.html#ç®—æ³•å…¬å¼€è¯¾)
+ÏêÇéÇë¼û[´úÂëËæÏëÂ¼ (programmercarl.com)](https://www.programmercarl.com/0015.ÈıÊıÖ®ºÍ.html#Ë¼Â·)
 
 ~~~c++
-//åŒæŒ‡é’ˆæ³•
-//æ—¶é—´å¤æ‚åº¦ï¼šo(n^2)
-//ç©ºé—´å¤æ‚åº¦ï¼šo(1)
+//Ë«Ö¸Õë·¨
+//Ê±¼ä¸´ÔÓ¶È£ºo(n^2)
+//¿Õ¼ä¸´ÔÓ¶È£ºo(1)
 #include <iostream>
 #include <algorithm>
 #include <vector>
 using namespace std;
 
-//åŒæŒ‡é’ˆå†™æ³•
+//Ë«Ö¸ÕëĞ´·¨
 class apex {
     public:
     vector<vector<int>> function(vector<int>nums) {
         vector<vector<int>>result;
         int Size = nums.size();
         sort(nums.begin(), nums.end());
-        // æ‰¾å‡ºa + b + c = 0
+        // ÕÒ³öa + b + c = 0
         // a = nums[i], b = nums[left], c = nums[right]
         for (int i = 0; i < nums.size(); i++) {
-            // æ’åºä¹‹åå¦‚æœç¬¬ä¸€ä¸ªå…ƒç´ å·²ç»å¤§äºé›¶ï¼Œé‚£ä¹ˆæ— è®ºå¦‚ä½•ç»„åˆéƒ½ä¸å¯èƒ½å‡‘æˆä¸‰å…ƒç»„ï¼Œç›´æ¥è¿”å›ç»“æœå°±å¯ä»¥äº†
+            // ÅÅĞòÖ®ºóÈç¹ûµÚÒ»¸öÔªËØÒÑ¾­´óÓÚÁã£¬ÄÇÃ´ÎŞÂÛÈçºÎ×éºÏ¶¼²»¿ÉÄÜ´Õ³ÉÈıÔª×é£¬Ö±½Ó·µ»Ø½á¹û¾Í¿ÉÒÔÁË
             if (nums[i] > 0) {
                 return result;
             }
-            //é¦–å…ˆè¿™é‡Œæ˜¯å¯¹aå»é‡
-            //è¿™é‡Œä¸ºä»€ä¹ˆè¦ç”¨nums[i] != nums[i - 1]è€Œä¸æ˜¯i+1;
-            //å¦‚æœæ˜¯i+1çš„è¯ï¼Œå¦‚æœå‡ºç°-1,-1,2è¿™ç§æƒ…å†µï¼Œå°±ä¼šç›´æ¥æŠŠè¿™ç§ç»“æœè·³è¿‡
+            //Ê×ÏÈÕâÀïÊÇ¶ÔaÈ¥ÖØ
+            //ÕâÀïÎªÊ²Ã´ÒªÓÃnums[i] != nums[i - 1]¶ø²»ÊÇi+1;
+            //Èç¹ûÊÇi+1µÄ»°£¬Èç¹û³öÏÖ-1,-1,2ÕâÖÖÇé¿ö£¬¾Í»áÖ±½Ó°ÑÕâÖÖ½á¹ûÌø¹ı
             if (i > 0 && nums[i] == nums[i - 1]) {
                 continue;
             }
 
             int left = i + 1;
             int right = Size - 1;
-
-            while (left < right) { //ä¸è¦ç”¨<=ï¼Œå› ä¸ºæœ‰=çš„è¯å°±ä¸æ˜¯ä¸‰æ•°ç›¸åŠ äº†
+    
+            while (left < right) { //²»ÒªÓÃ<=£¬ÒòÎªÓĞ=µÄ»°¾Í²»ÊÇÈıÊıÏà¼ÓÁË
                 int tamp = nums[i] + nums[left] + nums[right];
                 if (tamp > 0) {
                     right--;
@@ -43,7 +43,7 @@ class apex {
                     left++;
                 } else {
                     result.push_back(vector<int> {nums[i], nums[left], nums[right]});
-                    // å»é‡é€»è¾‘åº”è¯¥æ”¾åœ¨æ‰¾åˆ°ä¸€ä¸ªä¸‰å…ƒç»„ä¹‹åï¼Œå¯¹b å’Œ cå»é‡
+                    // È¥ÖØÂß¼­Ó¦¸Ã·ÅÔÚÕÒµ½Ò»¸öÈıÔª×éÖ®ºó£¬¶Ôb ºÍ cÈ¥ÖØ
                     while (right > left && nums[right] == nums[right - 1]) {
                         right--;
                     }
@@ -53,11 +53,12 @@ class apex {
                     right--;
                     left++;
                 }
-
+    
             }
         }
         return result;
     }
+
 };
 
 int main() {
@@ -74,6 +75,69 @@ int main() {
         cout << "}";
         cout << endl;
     }
+
 }
+~~~
+
+~~~c++
+//ÍµÀÁ×÷·¨£¬Ê¹ÓÃsetÈİÆ÷½øĞĞ×Ô¶¯È¥ÖØ
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <set>
+
+using namespace std;
+
+class apex {
+	public:
+		vector<vector<int>> function(vector<int> nums) {
+			set<vector<int>> result;
+			int Size = nums.size();
+			sort(nums.begin(), nums.end());
+
+			for (int i = 0; i < nums.size(); i++) {
+				if (nums[i] > 0) {
+					return vector<vector<int>>(result.begin(), result.end());  // ×ª»»Îª vector<vector<int>>
+				}
+
+				int left = i + 1;
+				int right = Size - 1;
+
+				while (left < right) {
+					int temp = nums[i] + nums[left] + nums[right];
+					if (temp > 0) {
+						right--;
+					} else if (temp < 0) {
+						left++;
+					} else {
+						result.insert({nums[i], nums[left], nums[right]});
+						right--;
+						left++;
+					}
+				}
+			}
+			return vector<vector<int>>(result.begin(), result.end());  // ×ª»»Îª vector<vector<int>>
+		}
+};
+
+int main() {
+	apex lol;
+	vector<int> nums = {1, 2, -1, -2, 1, 0, 3, -2, -2, 1, 3, -1, -9, -1, 8, 0, -1};
+	vector<vector<int>> happy;  // ±£³ÖÎª vector<vector<int>>
+
+	happy = lol.function(nums);
+
+	for (const auto &triplet : happy) {
+		cout << "{";
+		for (int i : triplet) {
+			cout << i << ",";
+		}
+		cout << "}" << endl;
+	}
+
+	return 0;
+}
+
+
 ~~~
 
