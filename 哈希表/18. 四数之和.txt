@@ -1,0 +1,140 @@
+### 力扣[18. 四数之和 - 力扣（LeetCode）](https://leetcode.cn/problems/4sum/description/)
+
+**详情请见代码随想录：[代码随想录 (programmercarl.com)](https://www.programmercarl.com/0018.四数之和.html#算法公开课)**：
+
+
+
+#### set自动去重法
+
+~~~c++
+//代价很大，因为要使用set，会消耗很多算力，以及增加时间复杂度。
+//时间复杂度: O(n^3)
+//空间复杂度: O(1)
+
+#include <bits\stdc++.h>//万能头
+#include <vector>
+using namespace std;
+
+class Solution {
+	public:
+		vector<vector<int>> fourSum(vector<int> &nums, int target) {
+			set<vector<int>> result;
+			sort(nums.begin(), nums.end());
+			int n = nums.size();
+			for (int i = 0; i < n; i++) {
+				for (int j = i + 1; j < n; j++) {
+					int left = j + 1;
+					int right = n - 1;
+					while (left < right) {
+				long long sum = static_cast<long long>(nums[i]) + nums[j] + nums[left] + nums[right];
+                        //这里使用longlong的原因是四数相加有可能会造成整数溢出
+						if (sum < target) {
+							left++;
+						} else if (sum > target) {
+							right--;
+						} else {
+							result.insert({nums[i], nums[j], nums[left], nums[right]});
+							left++;
+							right--;
+						}
+					}
+				}
+			}
+			return vector<vector<int>>(result.begin(), result.end());
+		}
+};
+
+
+int main() {
+	vector<int>nums = {1, 63, 2, 4, 6, -1, -6, -1, 1, 2, 0, -62, 0, 1};
+	Solution apex;
+	auto ea = apex.fourSum(nums, 0);
+	for (auto &i : ea) {
+		cout << "{";
+		for (auto &j : i) {
+			cout << j << " ";
+		}
+		cout << "}" << endl;
+	}
+}
+~~~
+
+##### 优化，双指针法
+
+~~~c++
+//时间复杂度: O(n^3)
+//空间复杂度: O(1)
+
+#include <bits\stdc++.h>//万能头
+#include <vector>
+using namespace std;
+
+class Solution {
+	public:
+		vector<vector<int>> fourSum(vector<int> &nums, int target) {
+			vector<vector<int>>result;
+			sort(nums.begin(), nums.end());
+			for (int k = 0; k < nums.size(); k++) {
+                
+				//这里进行去枝操作，当nums[k]>target时，就不可能出现在数组中存在四数相加等于target，前提是要
+				//nums[k]>0&&target>0,因为target可以取负数，不满足前提的话可能会出现{-1,-2,0,0},target取-3;
+				if (nums[k] >= 0  && nums[k] > target)
+					break;
+
+				//这里进行去重,防止将相同的数组存进result中.
+				if (k > 0 && nums[k] == nums[k - 1])
+					continue;
+
+				for (int j = k + 1; j < nums.size(); j++) {
+					int lsum = nums[k] + nums[j];
+					if (lsum >= 0  && lsum > target)
+						break;//二次去枝叶
+					if (j > k + 1 && nums[j] == nums[j - 1])
+						continue;
+
+					int left = j + 1;
+					int right = nums.size() - 1;
+                    
+					while (left < right) {
+						long long sum = nums[k] + nums[j] + nums[left] + nums[right];
+						if (sum > target)
+							right--;
+						else if (sum < target)
+							left++;
+						else {
+							result.push_back(vector<int> {nums[k], nums[j], nums[left], nums[right]});
+
+							//进行对俩指针的去重
+							while (left < right && nums[left] == nums[left + 1]) {
+								left++;
+							}
+							while (left < right && nums[right] == nums[right - 1]) {
+								right--;
+							}
+
+							left++;
+							right--;
+						}
+					}
+				}
+			}
+			return result;
+		}
+
+};
+
+int main() {
+	vector<int>nums = {1, 63, 2, 4, 6, -1, -6, -1, 1, 2, 0, -62, 0, 1};
+	Solution apex;
+	auto ea = apex.fourSum(nums, 0);
+	for (auto &i : ea) {
+		cout << "{";
+		for (auto &j : i) {
+			cout << j << " ";
+		}
+		cout << "}" << endl;
+	}
+	return 0;
+}
+~~~
+
