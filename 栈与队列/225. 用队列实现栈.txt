@@ -1,0 +1,103 @@
+### 力扣[225. 用队列实现栈 - 力扣（LeetCode）](https://leetcode.cn/problems/implement-stack-using-queues/)
+
+**详情请见**[代码随想录 (programmercarl.com)](https://www.programmercarl.com/0225.用队列实现栈.html#思路)
+
+~~~c++
+//使用俩个队列来模拟栈的行为
+class MyStack {
+public:
+    queue<int>qu1;
+    queue<int>qu2;
+
+    MyStack() {
+
+    }
+    
+    void push(int x) {
+        qu1.push(x);
+    }
+    
+    int pop() {
+        int Size=qu1.size();
+        Size--;
+        while(Size--)
+        {
+            qu2.push(qu1.front());
+            qu1.pop();
+        }
+        int result=qu1.front();
+        qu1.pop();
+        qu1=qu2;
+        while(!qu2.empty())
+        {
+            qu2.pop();
+        }
+        return result;
+    }
+    
+    int top() {
+        return qu1.back();
+    }
+    
+    bool empty() {
+        return (qu1.empty()&&qu2.empty());
+    }
+};
+
+/**
+ * Your MyStack object will be instantiated and called as such:
+ * MyStack* obj = new MyStack();
+ * obj->push(x);
+ * int param_2 = obj->pop();
+ * int param_3 = obj->top();
+ * bool param_4 = obj->empty();
+ */
+~~~
+
+~~~c++
+//只使用一个队列来模拟栈的行为
+class MyStack {
+public:
+    queue<int>que;
+    MyStack() {
+
+    }
+    
+    void push(int x) {
+        que.push(x);
+    }
+    
+    int pop() {
+        int Size=que.size();
+        Size--;
+        while(Size--)
+        {
+            que.push(que.front());
+            que.pop();
+            
+        }
+        int result=que.front();
+        que.pop();
+        return result;
+
+    }
+    
+    int top() {
+        return que.back();
+    }
+    
+    bool empty() {
+        return que.empty();
+    }
+};
+
+/**
+ * Your MyStack object will be instantiated and called as such:
+ * MyStack* obj = new MyStack();
+ * obj->push(x);
+ * int param_2 = obj->pop();
+ * int param_3 = obj->top();
+ * bool param_4 = obj->empty();
+ */
+~~~
+
