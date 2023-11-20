@@ -1,0 +1,35 @@
+### 力扣[20. 有效的括号 - 力扣（LeetCode）](https://leetcode.cn/problems/valid-parentheses/submissions/483452036/)
+
+**详情请见：**[代码随想录 (programmercarl.com)](https://www.programmercarl.com/0020.有效的括号.html#算法公开课)
+
+有三种情况：
+
+1、左边多了 : [ ( { } )
+
+2、右边多了: [ ( ) ] )
+
+3、类型不匹配: [ { ( } ) ]
+
+~~~c++
+//时间复杂度o(n)
+//空间复杂度o(n);
+
+class Solution {
+public:
+    bool isValid(string s) {
+        if(s.size()%2!=0)return false; //进行去枝操作，若干字符串是奇数，则一定会出错
+        stack<int>sd;
+        for(int x=0;x<s.size();x++)
+        {
+            if(s[x]=='{')sd.push('}');//遍历到啥，就入栈遍历元素对应的那个元素；
+            else if(s[x]=='[')sd.push(']');
+            else if(s[x]=='(')sd.push(')');
+            else if(sd.empty()||sd.top()!=s[x])return false;//先判断是否栈是否为空的情况，然后在判断是否出现类型不符的情况
+
+            else sd.pop();//将元素弹出栈
+         }
+         return sd.empty();//判断是否出现栈中多出了'}')']'；
+    }
+};
+~~~
+
