@@ -1,0 +1,31 @@
+### 力扣[1047. 删除字符串中的所有相邻重复项 - 力扣（LeetCode）](https://leetcode.cn/problems/remove-all-adjacent-duplicates-in-string/description/)
+
+**详情请见**[代码随想录 (programmercarl.com)](https://www.programmercarl.com/1047.删除字符串中的所有相邻重复项.html#思路)
+
+~~~c++
+//时间复杂度:o(n)
+//空间复杂度:o(n)
+class Solution {
+public:
+    string removeDuplicates(string s) {
+        stack<char>sta;//创建一个栈
+        for(int i=0;i<s.size();i++)
+        {
+            //当栈中为空或字符串当前元素和栈顶元素不匹配时就将之入栈
+            if(sta.empty()||s[i]!=sta.top()){sta.push(s[i]);}
+			//否则将栈顶元素出栈，并跳过字符串当前元素
+            else {sta.pop();}
+           
+        }
+        //因为不能使用to_string()函数来强制转化栈stack对象，所以使用一下方法来返回字符串
+        string result="";
+        while(!sta.empty())
+        {
+            result=sta.top()+result;//这里如果是result+sta.top()会造成按照栈顺序返回字符串。
+            sta.pop();
+        }
+        return result;
+    }
+};
+~~~
+
