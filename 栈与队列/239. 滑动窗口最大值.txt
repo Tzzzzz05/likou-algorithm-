@@ -1,0 +1,65 @@
+### 力扣-[239. 滑动窗口最大值](https://leetcode.cn/problems/sliding-window-maximum/)
+
+**详情请见：**[代码随想录 (programmercarl.com)](https://www.programmercarl.com/0239.滑动窗口最大值.html#算法公开课)
+
+~~~c++
+//我理解不是特别透彻，希望二刷
+//时间复杂度: O(n)
+//空间复杂度: O(k)
+#include <iostream>
+#include <vector>
+#include <deque>
+using namespace std;
+
+//类中镶嵌类
+class Solution {
+    private:
+    class Mydeque {
+        public:
+        deque<int> que;
+        void push(int value) {
+            while (!que.empty() && value > que.back()) {
+                que.pop_back();
+            }
+            que.push_back(value);
+        }
+        void pop(int value) {
+            if (!que.empty() && value == que.front()) {
+                que.pop_front();
+            }
+        }
+        int front() {
+            return que.front();
+        }
+    };
+
+    public:
+    vector<int> maxSlidingWindow(vector<int> &nums, int k) {
+        Mydeque que;
+        vector<int> result;
+        for (int i = 0; i < k; i++) {
+            que.push(nums[i]);
+        }
+        result.push_back(que.front());
+        for (int i = k; i < nums.size(); i++) {
+            que.pop(nums[i - k]);
+            que.push(nums[i]);
+            result.push_back(que.front());
+        }
+        return result;
+    }
+};
+
+int main() {
+    vector<int> nums = {3, 7, 5, 1, 2, 8, 9, 6, 0};     
+    Solution sole;
+    nums = sole.maxSlidingWindow(nums, 4);
+    for (int &i : nums) {
+        cout << i << " ";
+    }
+
+    return 0;
+}
+
+~~~
+
