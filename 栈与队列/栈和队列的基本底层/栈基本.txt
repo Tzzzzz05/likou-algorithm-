@@ -1,0 +1,354 @@
+## 栈
+
+~~~c++
+/*SqStack（数组实现的顺序栈）：
+
+使用数组作为栈的底层存储结构，通过 ElemType *base 指针指向栈底，ElemType *top 指针指向栈顶。
+初始化时通过动态分配数组空间，入栈和出栈操作通过移动 top 指针实现。
+通过数组实现，支持随机访问，但在动态扩展和收缩时可能需要重新分配内存。*/
+
+#include <bits\stdc++.h>
+#include <vector>
+#include <deque>
+using namespace std;
+
+#define MaxSize 128
+typedef int ElemType;
+
+
+
+typedef struct SqStack {
+ElemType *base;//栈底指针
+ElemType *top;//栈底顶针
+int a = 10;
+} SqStack;
+
+class Stack {
+public:
+
+//初始化栈
+Stack(SqStack &S) {
+	S.base = new int[MaxSize];
+	if (!S.base) {
+		cout << "初始化失败" << endl;
+	}
+	cout << "初始化成功" << endl;
+	S.top = S.base;
+
+}
+
+//入栈
+bool PushStack(SqStack &S, ElemType e) {
+	if (S.top - S.base == MaxSize)
+		return false;
+	*(S.top++) = e;
+	return true;
+}
+
+//出栈
+bool PopStack(SqStack &S, ElemType &e) {
+	if (S.base == S.top) { //栈空
+		return false;
+	}
+	e = *(--S.top);
+	return true;
+}
+
+//获取栈顶元素
+
+ElemType GetTop(SqStack &S) { //返回 S 的栈顶元素，栈顶指针不变
+	if (S.top != S.base) { //栈非空
+		return *(S.top - 1); //返回栈顶元素的值，栈顶指针不变
+	} else {
+		return -1;
+	}
+}
+
+
+//判断空栈
+
+bool IsEmpty(SqStack &S) {//判断栈是否为空
+	if (S.top == S.base) {
+		return true;
+	} else {
+		return false;
+	}
+}
+//随机访问数组元素
+ElemType GetElement(SqStack &S, int index) {
+	if (index < 0 || index >= (S.top - S.base)) {
+		cout << "索引越界" << endl;
+		return -1; // 返回一个特定的值表示错误
+	}
+	return S.base[index];
+}
+
+//删除栈
+void DestoryStack(SqStack &S) {
+	if (S.base) {//判断栈是否有所指向
+		free(S.base);//清空base指向的内存
+		S.base = NULL;//将空赋给俩指针，避免悬空指针
+		S.top = NULL;
+	} else {
+		cout << "此栈已经是空栈";
+	}
+}
+
+};
+
+int main() {
+
+SqStack S;
+Stack stack(S);
+stack. PushStack(S, 99);
+stack. PushStack(S, 999);
+
+cout << S.a << endl;
+cout << stack.GetElement(S, 2);
+}
+
+~~~
+
+
+
+~~~c++
+/*SNode（链表实现的链栈）：
+
+使用链表作为栈的底层存储结构，通过 struct SNode 结点存储元素，每个结点有一个指向下一结点的指针 next。
+初始化时创建一个头结点，头结点不存储实际数据，仅用于标识链表的起始位置。
+入栈和出栈操作通过在链表上插入和删除结点实现。
+链栈的长度可以动态增长，不需要预先指定最大容量。*/
+#include <iostream>
+using namespace std;
+
+typedef int ElemType;  // 自定义链栈的数据元素为整数。
+
+struct SNode                 // 链栈的结点。
+{
+    ElemType data;         // 存放结点的数据元素。
+    struct SNode* next;  // 指向下一个结点的指针。
+};
+
+// 初始化链栈，返回值：失败返回nullptr，成功返回头结点的地址。
+SNode* InitStack()
+{
+    SNode* head = new (std::nothrow) SNode; // 分配头结点。
+
+    if (head == nullptr) return nullptr;  // 内存不足，返回失败。
+
+    head->next = nullptr;  // 头结点的下一结点暂时不存在，置空。
+
+    return head;    // 返回头结点。
+}
+
+// 销毁链栈。
+void DestroyStack(SNode* head)
+{
+    // 销毁链栈是指释放链栈全部的结点，包括头结点。
+    SNode* tmp;
+
+    while (head != nullptr)
+    {
+        tmp = head->next;      // tmp保存下一结点的地址。
+        delete head;                 // 释放当前结点。
+        head = tmp;                 // 指针移动到下一结点。
+    }
+}
+
+// 元素入栈，返回值：false-失败；true-成功。
+bool Push(SNode* head, const ElemType& ee)
+{
+    if (head == nullptr) { cout << "链栈不存在。\n"; return false; }
+
+    SNode* tmp = new (std::nothrow) SNode;  // 分配一个新结点。
+    if (tmp == nullptr) return false;
+
+    tmp->data = ee;     // 把元素的值存入新结点。
+
+    // 处理next指针。
+    tmp->next = head->next;
+    head->next = tmp;
+
+    return true;
+}
+
+// 显示链栈中全部的元素。
+void PrintStack(const SNode* head)
+{
+    if (head == nullptr) { cout << "链栈不存在。\n"; return; }
+
+    SNode* pp = head->next;        // 从第1个结点开始。
+
+    while (pp != nullptr)
+    {
+        cout << pp->data << " ";    // 如果元素为结构体，这行代码要修改。
+        pp = pp->next;			            // 指针往后移动一个结点。
+    }
+
+    cout << endl;
+}
+
+// 求链栈的长度，返回值：>=0-栈SS结点的个数。
+size_t  StackLength(SNode* head)
+{
+    if (head == nullptr) { cout << "链栈不存在。\n"; return 0; }
+
+    SNode* pp = head->next;  // 头结点不算，从第1个结点开始。
+
+    size_t length = 0;
+
+    while (pp != nullptr) { pp = pp->next; length++; }
+
+    return length;
+}
+
+// 元素出栈。
+bool Pop(SNode* head,ElemType &ee)
+{
+    if (head == nullptr) { cout << "链栈不存在。\n"; return false; }
+
+    if (head->next == nullptr) { cout << "链栈为空，没有结点。\n"; return false; }
+
+    SNode* pp = head->next;		// pp指向第一个节点。
+    head->next = head->next->next;		// 修改头结点的next指针。
+    ee = pp->data;
+    delete pp;		// 删除第一个节点。
+
+    return true;
+}
+
+int main()
+{
+    SNode* SS = InitStack();     // 初始化链栈SS。
+
+    cout << "入栈三个元素（1、2、3）。\n";
+    Push(SS, 1);
+    Push(SS, 2);
+    Push(SS, 3);
+    PrintStack(SS);			// 把链栈中全部的元素显示出来。
+    
+    cout << "链栈的长度：" << StackLength(SS) << endl;
+
+    // 元素出栈。
+    ElemType ee;
+    Pop(SS,ee);
+    cout << "出栈的元素的值是：" << ee << endl;
+
+    DestroyStack(SS);                // 销毁链栈SS。
+}
+~~~
+
+
+
+
+
+~~~c++
+//类模版栈，带了迭代器
+#include <iostream>
+using namespace std;
+
+template<class T>
+class StackIterator;
+
+template<class Date>
+class Stack {
+private:
+    Date* stacknum;
+    int top;
+    int stacksize;
+
+public:
+    Stack(int length) : stacksize(length), top(0) {
+        stacknum = new (nothrow) Date[stacksize];
+    }
+
+    ~Stack() {
+        delete[] stacknum;
+    }
+
+    bool isempty() const {
+        return top == 0;
+    }
+
+    bool isfull() const {
+        return top == stacksize;
+    }
+
+    bool push(const Date& item) {
+        if (top < stacksize) {
+            stacknum[top++] = item;
+            return true;
+        }
+        return false;
+    }
+
+    bool pop() {
+        if (top > 0) {
+            --top;
+            return true;
+        }
+        return false;
+    }
+
+    bool print() const {
+        for (int i = 0; i < top; ++i) {
+            cout << stacknum[i] << " ";
+        }
+        return true;
+    }
+
+    friend class StackIterator<Date>;
+    using iterator = StackIterator<Date>;
+
+    iterator begin() {
+        return iterator(stacknum);
+    }
+
+    iterator end() {
+        return iterator(stacknum + top);
+    }
+};
+
+template<class T>
+class StackIterator {
+private:
+    T* current;
+
+public:
+    StackIterator(T* start) : current(start) {}
+
+    bool operator!=(const StackIterator<T>& other) const {
+        return current != other.current;
+    }
+
+    StackIterator<T>& operator++() {
+        ++current;
+        return *this;
+    }
+
+    T& operator*() const {
+        return *current;
+    }
+};
+
+int main() {
+    Stack<int> apex(10);
+    apex.push(10);
+    apex.push(12);
+    apex.push(12);
+
+    // 使用迭代器遍历栈
+    for (Stack<int>::iterator it = apex.begin(); it != apex.end(); ++it) {
+        cout << *it << " ";
+    }
+    cout<<endl;
+    for(int &i:apex)
+    {
+        cout<<i<<" ";
+    }
+
+    return 0;
+}
+
+~~~
+

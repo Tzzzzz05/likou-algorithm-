@@ -1,0 +1,206 @@
+### 队列
+
+~~~c++
+//链表队列，动态队列
+//这个队列实现是基于链表的，支持动态增加或减少元素。每个节点都通过 new 运算符动态分配内存。
+#include<iostream>
+using namespace std;
+
+class Node {
+public:
+    int Date;
+    Node* next;
+};
+
+class Apex {
+private:
+    Node* front;
+    Node* rear;
+    int count;
+    int maxsize;
+public:
+    Apex() {
+        count = 0;
+        front = rear = nullptr;
+    }
+
+    bool isempty() {
+        return count == 0;
+    }
+
+    int frontprint() {
+        return front->Date;
+    }
+
+    bool push(int value) {
+        Node* newnode = new Node;
+        newnode->Date = value;
+        newnode->next = nullptr;
+
+        if (isempty()) {
+            front = rear = newnode;
+        }
+        else {
+            rear->next = newnode;
+            rear = newnode;
+        }
+        count++;
+        return true;
+    }
+
+    bool pop(int& value) {
+        if (isempty()) {
+            return false;
+        }
+        else {
+            value = front->Date;
+            Node* nextNode = front->next;
+            delete front;
+            front = nextNode;
+            count--;
+            return true;
+        }
+    }
+
+    void print() {
+        Node* currNode = front;
+        for (int i = 0; i < count; i++) {
+            cout << currNode->Date << " ";
+            currNode = currNode->next;
+        }
+        cout << endl;
+    }
+
+    ~Apex() {
+        int value;
+        while (!isempty()) {
+            pop(value);
+        }
+    }
+};
+
+int main() {
+    int value;
+    Apex jjb;
+    for (int x = 0; x < 5; x++) {
+        jjb.push(x);
+    }
+
+    cout << "Front: " << jjb.frontprint() << endl;
+    jjb.print();
+    jjb.pop(value);
+    jjb.print();
+
+    return 0;
+}
+
+~~~
+
+
+
+~~~c++
+//静态队列~循环队列
+//实现了一个静态队列，具体来说是一个循环队列（Circular Queue），静态队列的最大容量是固定的，因此在使用时需要确保不会超出容量。
+#include<iostream>
+using namespace std;
+
+class Stack{
+private:
+    int front;
+    int rear;
+    int* nums;
+    int count;
+    int maxsize;
+public:
+    Stack(int max);
+    ~Stack();
+    bool push(const int data);
+    bool pop(int &value);
+    bool isempty();
+    bool isfull();
+    void print();
+};
+
+
+Stack::Stack(int max)
+{
+    nums=new int[max];
+    front=0;
+    rear=-1;
+    count=0;
+    maxsize=max;
+}
+Stack::~Stack()
+{
+    free(nums);
+    nums=nullptr;
+}
+
+bool Stack::isempty()
+{
+    return count==0;
+}
+
+bool Stack::isfull()
+{
+    return (count>=maxsize);
+}
+
+bool Stack::push(const int value)
+{
+    if(isfull()){
+        return false;
+    }
+    else{
+        rear=(rear+1)%maxsize;
+        nums[rear]=value;
+        count++;
+        return true;
+    }
+}
+bool Stack::pop(int &tmp)
+{
+    if(isempty())
+    {
+        return false;
+    }
+    else{
+        tmp=nums[front];
+        front= (front + 1) % maxsize;
+        count--;
+        return true;
+
+    }
+}
+
+void Stack::print()
+{
+    cout<< "front:";
+    for (int i = 0; i < count; i++) 
+    {
+        
+        cout<< nums[(front + i) % maxsize]<<" " ;
+
+        
+    }
+}
+
+
+int main()
+{
+
+    Stack apex(5);
+    apex.push(1);
+    apex.push(2);
+    apex.push(3);
+    apex.push(4);
+    apex.push(5);
+    
+    int value;
+    apex.pop(value);  
+
+    apex.push(100);
+    apex.print();
+}
+~~~
+

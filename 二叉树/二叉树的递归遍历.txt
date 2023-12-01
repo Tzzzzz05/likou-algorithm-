@@ -1,0 +1,52 @@
+### 二叉树的递归遍历[144. 二叉树的前序遍历 - 力扣（LeetCode）](https://leetcode.cn/problems/binary-tree-preorder-traversal/)
+
+详情请见[代码随想录 (programmercarl.com)](https://www.programmercarl.com/二叉树理论基础.html#算法公开课)
+
+~~~c++
+//链式存储，创造结点
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+};
+~~~
+
+~~~c++
+//前序遍历-中左右
+class Solution {
+public:
+    void traversal(TreeNode* cur, vector<int>& vec) {
+        if (cur == NULL) return;
+        vec.push_back(cur->val);    // 中
+        traversal(cur->left, vec);  // 左
+        traversal(cur->right, vec); // 右
+    }
+    vector<int> preorderTraversal(TreeNode* root) {
+        vector<int> result;
+        traversal(root, result);
+        return result;
+    }
+};
+~~~
+
+~~~c++
+//后序遍历-左右中
+void traversal(TreeNode* cur, vector<int>& vec) {
+    if (cur == NULL) return;
+    traversal(cur->left, vec);  // 左
+    traversal(cur->right, vec); // 右
+    vec.push_back(cur->val);    // 中
+}
+~~~
+
+~~~c++
+//中序遍历-左中右
+void traversal(TreeNode* cur, vector<int>& vec) {
+    if (cur == NULL) return;
+    traversal(cur->left, vec);  // 左
+    vec.push_back(cur->val);    // 中
+    traversal(cur->right, vec); // 右
+}
+~~~
+
