@@ -1,0 +1,120 @@
+## 二叉树的迭代遍历
+
+~~~c++
+//二叉树结点创建
+struct TreeNode{
+    int val;
+    treenode *left;
+    treenode right;
+    treenode(int x):val(x),left(NULL),right(NULL){}
+};
+~~~
+
+~~~c++
+//二叉树的迭代前序遍历-中左右
+
+class Solution{
+    public:
+    vector<int>preorderTraversal(TreeNode* root){
+        stack<TreeNode*> st;
+        vector<int> result;
+        if(root==NULL) return result;
+        st.push(root);
+        while(!st.empty())
+        {
+            TreeNode* node=st.top();   //中
+            st.pop();
+            result.push_back(node->val);    
+            if(node->right) st.push(node->right);   //右
+            if(node->left) st.push(node->left);		//左
+        }
+        return result;
+      
+    }
+};
+~~~
+
+~~~c++
+//二叉树的迭代后序遍历-左右中
+
+class Solution{
+    public:
+    vector<int>postorderTraversal(TreeNode* root)
+    {
+        stack<TreeNode*>st;
+        vector<int>result;
+        if(root==NULL) return result;
+        st.push(root);
+        while(!st.empty()){
+            TreeNode* node=st.top();
+            st.pop();
+            result.push_back(node->val);
+            if(node->left) st.push(node->left);     //先入左
+            if(node->right) st.push(node->right);	//先入右
+            
+		}
+        reverse(result.begin(),result.end());  		//颠倒一下顺序，就可以导出了
+        return result;
+    }
+};
+~~~
+
+~~~c++
+//二叉树的迭代中序遍历-左中右
+
+#include<iostream>
+#include<vector>
+#include<stack>
+using namespace std;
+//二叉树的迭代中序遍历-左中右
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int io):val(io),left(NULL),right(NULL){}
+};
+
+
+class solution {
+public:
+    vector<int>midorderTraversal(TreeNode* root)
+    {
+        stack<TreeNode*>st;
+        vector<int>result;
+        TreeNode* cur = root;   //用于遍历结点
+        while (cur != NULL || !st.empty())
+        {
+            if (cur != NULL)
+            {
+                st.push(cur);
+                cur = cur->left;
+            }
+            else {
+                cur = st.top();
+                st.pop();
+                result.push_back(cur->val);
+                cur = cur->right;
+            }
+        }
+        return result;
+    }
+};
+
+int main()//这里给出来了main函数可以直接带入编译器编译运行，上面俩个同理
+{
+    TreeNode* root = new TreeNode(10);   //创建一个二叉树，有些简单，懒得写函数了
+    TreeNode* root1 = new TreeNode(101);
+    TreeNode* root2 = new TreeNode(102);
+    root->left = root1;
+    root->right = root2;
+
+    solution ab;
+    auto result=ab.midorderTraversal(root);
+    for (int i : result)
+    {
+        cout << i << " ";
+    }
+}
+~~~
+
