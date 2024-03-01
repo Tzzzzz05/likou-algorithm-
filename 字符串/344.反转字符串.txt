@@ -1,0 +1,43 @@
+## 344.反转字符串
+
+***
+
+~~~c++
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class reverselei
+{
+public:
+    void reversehan(vector<char> &ans)
+    {
+        int n = ans.size();
+        for (int i = 0; i < n / 2; i++)
+        {
+            char temp = ans[i];
+            ans[i] = ans[n - i - 1];
+            ans[n - i - 1] = temp;
+        }
+    }
+};
+
+int main()
+{
+    reverselei hpy;
+    // vector<char> npy = {'a', 'b', 'c', 'd', 'e', 'f', 'g'};
+    vector<char> npy;
+    char lf;
+    while (cin >> lf && lf != '#')
+    {
+        npy.push_back(lf);
+    }
+
+    hpy.reversehan(npy);
+    for (auto x : npy)
+    {
+        cout << x << " ";
+    }
+}
+~~~
+
